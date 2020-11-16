@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="UTF-8">
+	<title>Registrar</title>
+</head>
+<body>
+	<form>
+		<label for="email">E-Mail: </label>
+		<input type="email" id="email">
+		<label for="pw">Password: </label>
+		<input type="password" id="pw">
+		<input type="submit" value="Registrar">
+	</form>
+	
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function (event) {
+			var firebaseConfig = {
+				apiKey: "AIzaSyCv6D1ajzW0tEzdg3YFaP2KQEjnC_x8qkE",
+				authDomain: "contact-1bcd0.firebaseapp.com",
+				databaseURL: "https://contact-1bcd0.firebaseio.com",
+				projectId: "contact-1bcd0",
+				storageBucket: "contact-1bcd0.appspot.com",
+				messagingSenderId: "692647022585",
+				appId: "1:692647022585:web:2ad313563c60611cbeb728",
+				measurementId: "G-RF2SXBW0H6"
+			};
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+			firebase.analytics();
+			console.log("DOM completamente carregado e analisado");
+		});
+
+		document.querySelector("form").addEventListener("submit", evt => {
+			evt.preventDefault();
+			let email = document.querySelector("#email").value;
+			let password = document.querySelector("#pw").value;
+			
+			firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+				console.log("Criada Com Sucesso!");
+				let user = firebase.auth().currentUser;
+				user.sendEmailVerification().then(function() {
+					console.log("E-Mail Enviado!");
+				}).catch(function(error) {
+					console.log("Error ao enviar E-Mail: "+error);
+				});
+
+			}).catch(function(error) {
+				let errorCode = error.code;
+				let errorMessage = error.message;
+				console.log(errorCode + "\n"+errorMessage);
+			});
+
+		});
+	</script>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-storage.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+	<!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+</body>
+</html>

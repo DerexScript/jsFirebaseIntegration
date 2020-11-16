@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+	<meta charset="UTF-8">
+	<title>FireBase Teste</title>
+</head>
+
+<body>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function (event) {
+			var firebaseConfig = {
+				apiKey: "AIzaSyCv6D1ajzW0tEzdg3YFaP2KQEjnC_x8qkE",
+				authDomain: "contact-1bcd0.firebaseapp.com",
+				databaseURL: "https://contact-1bcd0.firebaseio.com",
+				projectId: "contact-1bcd0",
+				storageBucket: "contact-1bcd0.appspot.com",
+				messagingSenderId: "692647022585",
+				appId: "1:692647022585:web:2ad313563c60611cbeb728",
+				measurementId: "G-RF2SXBW0H6"
+			};
+			// Initialize Firebase
+
+			firebase.initializeApp(firebaseConfig);
+			firebase.analytics();
+			const db = firebase.firestore();
+			const booksRef = firebase.firestore().collection('contatos');
+			//get
+			booksRef.get().then((snapshot) => {
+				const data = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				console.log("All data in 'books' collection", data);
+				// [ { id: 'glMeZvPpTN1Ah31sKcnj', title: 'The Great Gatsby' } ]
+			});
+
+			//set
+			firebase.firestore().collection("contatos").add({ assunto: "Of Mice and Men", }).then((ref) => {
+				console.log("Added doc with ID: ", ref.id);
+				// Added doc with ID:  ZzhIgLqELaoE3eSsOazu
+			});
+
+			console.log("DOM completamente carregado e analisado");
+		});
+	</script>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-storage.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+	<!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+
+</body>
+
+</html>
